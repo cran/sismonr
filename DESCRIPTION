@@ -1,7 +1,7 @@
 Package: sismonr
 Type: Package
 Title: Simulation of in Silico Multi-Omic Networks
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: c(
     person("Olivia", "Angelin-Bonnet", email = "olivia.angelinbonnet@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7708-2919")),
     person("Patrick", "Biggs", role = c("aut"), comment = c(ORCID = "0000-0002-0285-4101")),
@@ -22,11 +22,11 @@ RoxygenNote: 6.1.1
 Suggests: knitr, rmarkdown, tcltk, rgl, testthat (>= 2.1.0)
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-05-20 00:47:10 UTC; oangelin
+Packaged: 2019-07-15 02:55:49 UTC; oangelin
 Author: Olivia Angelin-Bonnet [aut, cre]
     (<https://orcid.org/0000-0002-7708-2919>),
   Patrick Biggs [aut] (<https://orcid.org/0000-0002-0285-4101>),
   Matthieu Vignes [aut] (<https://orcid.org/0000-0001-8929-2975>),
   John M. Chambers [ctb]
 Repository: CRAN
-Date/Publication: 2019-05-24 11:30:03 UTC
+Date/Publication: 2019-07-15 05:00:02 UTC

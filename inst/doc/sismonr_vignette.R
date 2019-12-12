@@ -8,14 +8,13 @@ knitr::opts_chunk$set(
 )
 
 ## ---- eval = F-----------------------------------------------------------
-#  if(!require("devtools")) install.packages("devtools"); library(devtools)
-#  install_github("oliviaAB/sismonr")
+#  install.packages("sismonr")
 
 ## ------------------------------------------------------------------------
 #  library(sismonr)
 
 ## ------------------------------------------------------------------------
-#  myinsilicosystem = createInSilicoSystem(G = 10, PC.p = 0.7)
+#  myinsilicosystem = createInSilicoSystem(G = 10, PC.p = 0.7, ploidy = 2)
 
 ## ---- eval = F-----------------------------------------------------------
 #  ?insilicosystemargs
@@ -27,7 +26,7 @@ knitr::opts_chunk$set(
 ## ------------------------------------------------------------------------
 #  myinsilicosystem$genes
 
-## ---- eval = F-----------------------------------------------------------
+## ------------------------------------------------------------------------
 #  ## system with only protein-coding genes, all regulators of transcription (PC.TC.p),
 #  ## and all regulations are activations (positive regulation - TC.pos.p)
 #  myinsilicosystem2 = createInSilicoSystem(G = 15, PC.p = 1, PC.TC.p = 1, TC.pos.p = 1)
@@ -65,7 +64,7 @@ knitr::opts_chunk$set(
 #  myinsilicosystem$mosystem$PTMRN_edg
 
 ## ------------------------------------------------------------------------
-#  mypop = createInSilicoPopulation(3, myinsilicosystem, ngenevariants = 4, ploidy = 2)
+#  mypop = createInSilicoPopulation(3, myinsilicosystem, ngenevariants = 4)
 
 ## ---- eval = F-----------------------------------------------------------
 #  ?insilicoindividualargs
@@ -77,9 +76,8 @@ knitr::opts_chunk$set(
 ## ------------------------------------------------------------------------
 #  mypop$GenesVariants
 
-## ---- eval = F-----------------------------------------------------------
-#  
-#  mypop2 = createInSilicoPopulation(3, myinsilicosystem, ngenevariants = 2, ploidy = 2)
+## ------------------------------------------------------------------------
+#  mypop2 = createInSilicoPopulation(3, myinsilicosystem, ngenevariants = 2)
 #  mypop2$GenesVariants
 #  
 #  ## Creating a smaller system with only 3 genes
@@ -127,12 +125,6 @@ knitr::opts_chunk$set(
 #  mypop$individualsList$Ind2$haplotype
 #  mypop$individualsList$Ind3$haplotype
 
-## ------------------------------------------------------------------------
-#  mypop2 = createInSilicoPopulation(3, myinsilicosystem, ngenevariants = 2, ploidy = 4)
-#  mypop2$individualsList$Ind1$haplotype
-#  mypop2$individualsList$Ind2$haplotype
-#  mypop2$individualsList$Ind3$haplotype
-
 ## ---- fig.width = 7, fig.height = 6--------------------------------------
 #  plotMutations(mypop, myinsilicosystem, nGenesPerRow = 5)
 
@@ -146,7 +138,7 @@ knitr::opts_chunk$set(
 ## ------------------------------------------------------------------------
 #  sim = simulateInSilicoSystem(myinsilicosystem, mypop, simtime = 1000, ntrials = 5)
 
-## ---- eval = F-----------------------------------------------------------
+## ------------------------------------------------------------------------
 #  sim = simulateParallelInSilicoSystem(myinsilicosystem, mypop, simtime = 1000, ntrials = 5)
 
 ## ------------------------------------------------------------------------

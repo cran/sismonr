@@ -21,15 +21,14 @@ check_julia = function(){
 
 test_that("creation of stochastic system from empty system works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 5, empty = T, PC.p = 1)
-  indargs = insilicoindividualargs(ploidy = 3)
-  stochsys = createStochSystem(mysystem, indargs)
+  mysystem = createInSilicoSystem(G = 5, empty = T, PC.p = 1, ploidy = 3)
+  stochsys = createStochSystem(mysystem)
   dictkeys = juliaGet(juliaEval("collect(keys(%s))", stochsys))
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
-  mysystemNC = createInSilicoSystem(G = 5, empty = T, PC.p = 0)
-  stochsysNC = createStochSystem(mysystemNC, indargs)
+  mysystemNC = createInSilicoSystem(G = 5, empty = T, PC.p = 0, ploidy = 3)
+  stochsysNC = createStochSystem(mysystemNC)
   speciesNC = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsysNC)))
   reactionsNC = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsysNC)))
 
@@ -47,11 +46,10 @@ test_that("creation of stochastic system from empty system works", {
 
 test_that("creation of stochastic system for TC reaction works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TC.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TC.p = 1, ploidy = 2)
   mysystem = addEdge(mysystem, 1, 3, regsign = "1")
   mysystem = addEdge(mysystem, 2, 3, regsign = "-1")
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -60,16 +58,16 @@ test_that("creation of stochastic system for TC reaction works", {
   expect_equal(length(reactions), 4*2*2 + ## TC, TL, RD and PD rate for each of the 2 copies of each regulator gene (genes 1 and 2)
                  2*2*2*2 + # binding + unbinding reaction of each of the 2 copies of each regulator for each copy of the target
                  3*2 + # TC of gene 3: combination of 2 binding sites each in one of 3 possible states, but only the free state of binding site for reg 2 is active
-                 3*2) # TL, RD and PD of gene 3
+                 3*2 + # TL and PD of gene 3
+                 2*2*2) # PD of regulators when bound to a binding site: 2 regulators x 2 copies of each x 2 possible regulators on which they are bound (target GCN1 and target GCN2)
 })
 
 test_that("creation of stochastic system for TL reaction works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TL.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TL.p = 1, ploidy = 2)
   mysystem = addEdge(mysystem, 1, 3, regsign = "1")
   mysystem = addEdge(mysystem, 2, 3, regsign = "-1")
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -79,16 +77,17 @@ test_that("creation of stochastic system for TL reaction works", {
   expect_equal(length(reactions), 4*2*2 + ## TC, TL, RD and PD rate for each of the 2 copies of each regulator gene (genes 1 and 2)
                  2*2*2*2 + # binding + unbinding reaction of each of the 2 copies of each regulator for each copy of the target
                  3*2 + # TL of gene 3: combination of 2 binding sites each in one of 3 possible states, but only the free state of binding site for reg 2 is active
-                 3*2) # TC, RD and PD of gene 3
+                 2*2 + # TC and PD of gene 3
+                 2*3*3 +# RD of gene 3: RNA composed of 2 RBS, each in 3 possible state
+                 2*2*2) #PD of regulators when bound to a binding site: 2 regulators x 2 copies of each x 2 possible regulators on which they are bound (target GCN1 and target GCN2)
 })
 
 test_that("creation of stochastic system for RD reaction works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.RD.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.RD.p = 1, ploidy = 2)
   mysystem = addEdge(mysystem, 1, 3)
   mysystem = addEdge(mysystem, 2, 3)
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -100,11 +99,10 @@ test_that("creation of stochastic system for RD reaction works", {
 
 test_that("creation of stochastic system for PD reaction works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PD.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PD.p = 1, ploidy = 2)
   mysystem = addEdge(mysystem, 1, 3)
   mysystem = addEdge(mysystem, 2, 3)
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -115,11 +113,10 @@ test_that("creation of stochastic system for PD reaction works", {
 
 test_that("creation of stochastic system for PTM reaction works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PTM.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PTM.p = 1, ploidy = 2)
   mysystem = addEdge(mysystem, 1, 3)
   mysystem = addEdge(mysystem, 2, 3)
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -132,11 +129,10 @@ test_that("creation of stochastic system for PTM reaction works", {
 
 test_that("creation of stochastic system for regulatory complex works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TC.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.TC.p = 1, ploidy = 2)
   mysystem = addComplex(mysystem, c(1, 2))
   mysystem = addEdge(mysystem, "CTC1", 3, regsign = "1")
-  indargs = insilicoindividualargs(ploidy = 2)
-  stochsys = createStochSystem(mysystem, indargs)
+  stochsys = createStochSystem(mysystem)
   species = unlist(juliaGet(juliaEval("%s[\"species\"]", stochsys)))
   reactions = unlist(juliaGet(juliaEval("%s[\"reactions\"]", stochsys)))
 
@@ -148,13 +144,15 @@ test_that("creation of stochastic system for regulatory complex works", {
                  4*2 + ## association and dissociation reaction for each version of the complex
                  4*2*2 + ## binding and unbinding reaction of each version of the complex to each of the 2 versions of the target
                  5*2  + ## TC reaction with each of the 5 forms of the binding site for the 2 versions of the target gene
-                 3*2) ## TL, RD and PD reactions for both versions of the target gene
+                 3*2 +  ## TL, RD and PD reactions for both versions of the target gene
+                 2*2*2*3 ## PD of each component of the complex: 2 components x 2 copies x 2 poss for the other component x 2 (decay when the regulator is free or is bound to one of 2 possible binding sites)
+  )
 })
 
 test_that("simulation of in silico system works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 5, regcomplexes = "none", empty = T, PC.p = 1)
-  mypop = createInSilicoPopulation(3, mysystem, ploidy = 2)
+  mysystem = createInSilicoSystem(G = 5, regcomplexes = "none", empty = T, PC.p = 1, ploidy = 2)
+  mypop = createInSilicoPopulation(3, mysystem)
   sim = simulateInSilicoSystem(mysystem, mypop, simtime = 10, ntrials = 2, nepochs = 5)
 
   expect_equal(dim(sim$Simulation), c(2*3*6, ## 2 trials, for 3 individuals, with 5+1 time-points recorded
@@ -164,10 +162,10 @@ test_that("simulation of in silico system works", {
 
 test_that("merging functions for simulation results works", {
   check_julia()
-  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PTM.p = 1)
+  mysystem = createInSilicoSystem(G = 3, empty = T, PC.p = 1, PC.PTM.p = 1, ploidy = 2)
   mysystem = addComplex(mysystem, c(1, 2))
   mysystem = addEdge(mysystem, "CPTM1", 3, regsign = "1")
-  mypop = createInSilicoPopulation(1, mysystem, ploidy = 2)
+  mypop = createInSilicoPopulation(1, mysystem)
   sim = simulateInSilicoSystem(mysystem, mypop, simtime = 10, ntrials = 1, nepochs = 5)
   simNoAllele = mergeAlleleAbundance(sim$Simulation)
   simNoPTM = mergePTMAbundance(sim$Simulation)
@@ -184,4 +182,47 @@ test_that("merging functions for simulation results works", {
   expect_equal(simNoAllele[,"R1"], sim$Simulation[,"R1GCN1"]+sim$Simulation[,"R1GCN2"])
   expect_equal(simNoPTM[,"P3GCN1"], sim$Simulation[,"P3GCN1"]+sim$Simulation[,"Pm3GCN1"])
   expect_equal(simNoComplex[,"P1GCN1"], rowSums(sim$Simulation[,grep("^CPTM1_P1GCN1", names(sim$Simulation))]) + sim$Simulation[,"P1GCN1"])
+})
+
+test_that("sampling expected library sizes works", {
+  samples_list = sapply(1:100, function(x){paste0("Ind", x)})
+  libsizes = sampleLibrarySize(samples_list)
+  libsizes_2lanes = sampleLibrarySize(samples_list, laneEffect = T, nLanes = 2)
+  libsizes_4lanes = sampleLibrarySize(samples_list, laneEffect = T, nLanes = 4)
+
+  expect_equal(unname(libsizes$lane), rep(1, 100))
+  expect_equal(length(libsizes$expected_library_size), 100)
+  expect_equal(length(libsizes$lane_mean_library_size), 1)
+
+  expect_equal(sort(unique(libsizes_2lanes$lane)), 1:2)
+  expect_equal(length(libsizes_2lanes$lane_mean_library_size), 2)
+  expect_equal(sort(unique(libsizes_4lanes$lane)), 1:4)
+  expect_equal(length(libsizes_4lanes$lane_mean_library_size), 4)
+})
+
+test_that("creating RNA-seq data works",{
+  check_julia()
+  mysystem = createInSilicoSystem(G = 5, regcomplexes = "none", ploidy = 2, PC.p = 1)
+  mypop = createInSilicoPopulation(3, mysystem)
+  sim = simulateInSilicoSystem(mysystem, mypop, simtime = 500, ntrials = 10, nepochs = 5)
+
+  rnaSeq = getRNAseqMatrix(sim$Simulation, mysystem, laneEffect = F)
+  rnaSeq_allgenes = getRNAseqMatrix(sim$Simulation, mysystem, laneEffect = T, mrnasOnly = F)
+
+  n_pc = sum(mysystem$genes$coding == "PC")
+
+  libsize = rnorm(3, 1e5, 1e3)
+  gene_length = sample(10:200, n_pc)
+  rnaSeq_libsize = getRNAseqMatrix(sim$Simulation, mysystem, samplesLibSize = libsize, genesLength = gene_length)
+
+  expect_equal(length(rnaSeq$samplesLibSize), 3)
+  expect_equal(unname(rnaSeq$genesLength), rep(1, n_pc))
+  expect_equal(nrow(rnaSeq$rnaSeqMatrix), n_pc)
+  expect_equal(ncol(rnaSeq$rnaSeqMatrix), 3 + 1)
+
+  expect_equal(unname(rnaSeq_allgenes$genesLength), rep(1, nrow(mysystem$genes)))
+  expect_equal(nrow(rnaSeq_allgenes$rnaSeqMatrix), nrow(mysystem$genes))
+
+  expect_equal(unname(rnaSeq_libsize$samplesLibSize$expected_library_size), libsize)
+  expect_equal(unname(rnaSeq_libsize$genesLength), gene_length)
 })

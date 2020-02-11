@@ -30,10 +30,14 @@ end
 importExprBS = Meta.parse("import BioSimulator");
 try
 	eval(importExprBS)
+	if Pkg.installed()["BioSimulator"] < v"0.9.3"
+		Pkg.rm("BioSimulator")
+		Pkg.add(PackageSpec(url = "https://github.com/alanderos91/BioSimulator.jl.git", rev = "9f47b29de716a24ed7bb583920774c790d94c256"))
+	end
 	print("Module BioSimulator installed.\n")
 catch err
 	print("Installing Julia module Biosimulator. This can take a few minutes.\n")
-	Pkg.add(PackageSpec(url = "https://github.com/alanderos91/BioSimulator.jl.git"))
+	Pkg.add(PackageSpec(url = "https://github.com/alanderos91/BioSimulator.jl.git", rev = "9f47b29de716a24ed7bb583920774c790d94c256"))
  end
 
 importExprSB = Meta.parse("import StatsBase");

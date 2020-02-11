@@ -1,7 +1,7 @@
 Package: sismonr
 Type: Package
 Title: Simulation of in Silico Multi-Omic Networks
-Version: 2.0.0
+Version: 2.1.0
 Authors@R: c(
     person("Olivia", "Angelin-Bonnet", email = "olivia.angelinbonnet@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7708-2919")),
     person("Patrick", "Biggs", role = c("aut"), comment = c(ORCID = "0000-0002-0285-4101")),
@@ -18,15 +18,15 @@ Imports: XRJulia (>= 0.9.0), parallel, truncnorm, tictoc, stats, utils,
         dplyr, magrittr, stringr, XR, jsonlite, methods, tidyr, ggpubr,
         ggplot2, rlang, grDevices, igraph, graphics, scales
 SystemRequirements: Julia, v 1.0 or later
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Suggests: knitr, rmarkdown, tcltk, testthat (>= 2.1.0)
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-12-12 00:48:11 UTC; oangelin
+Packaged: 2020-02-11 02:53:08 UTC; oangelin
 Author: Olivia Angelin-Bonnet [aut, cre]
     (<https://orcid.org/0000-0002-7708-2919>),
   Patrick Biggs [aut] (<https://orcid.org/0000-0002-0285-4101>),
   Matthieu Vignes [aut] (<https://orcid.org/0000-0001-8929-2975>),
   John M. Chambers [ctb]
 Repository: CRAN
-Date/Publication: 2019-12-12 09:10:02 UTC
+Date/Publication: 2020-02-11 06:50:02 UTC
